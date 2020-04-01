@@ -1,0 +1,35 @@
+# Start configuration added by Zim install {{{
+#
+# User configuration sourced by all invocations of the shell
+#
+
+# Define Zim location
+: ${ZIM_HOME=${ZDOTDIR:-${HOME}}/.zim}
+# }}} End configuration added by Zim install
+
+export PATH=$PATH:/opt/nvim/usr/bin
+export PATH=$PATH:$HOME/.local/bin
+export TERM=xterm-256color
+export TERM_ITALICS=true
+export TERM=screen-256color
+export EDITOR=nvim
+export ZSH_AUTOSUGGEST_USE_ASYNC=1
+export ZSH_AUTOSUGGEST_MANUAL_REBIND=1
+
+# FZF
+export FZF_DEFAULT_OPTS='--bind ctrl-e:down,ctrl-u:up --preview "[[ $(file --mime {}) =~ binary ]] && echo {} is a binary file || (ccat --color=always {} || highlight -O ansi -l {} || cat {}) 2> /dev/null | head -500"'
+export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git -g ""'
+#export FZF_COMPLETION_TRIGGER='\'
+export FZF_TMUX=1
+export FZF_TMUX_HEIGHT='80%'
+export fzf_preview_cmd='[[ $(file --mime {}) =~ binary ]] && echo {} is a binary file || (ccat --color=always {} || highlight -O ansi -l {} || cat {}) 2> /dev/null | head -500'
+
+
+# nnn
+export NNN_BMS='d:~/Documents;u:/home/pi/;D:~/Downloads/'
+export NNN_USE_EDITOR=1                                 # use the $EDITOR when opening text files
+export NNN_SSHFS_OPTS="sshfs -o follow_symlinks"        # make sshfs follow symlinks on the remote
+export NNN_COLORS="2136"                        # use a different color for each context
+export NNN_TRASH=1                                      # trash (needs trash-cli) instead of delete
+alias ncp="cat ${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.selection | tr '\0' '\n'"
+[ -n "$NNNLVL" ] && PS1="N$NNNLVL $PS1"
