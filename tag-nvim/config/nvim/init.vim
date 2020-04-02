@@ -247,9 +247,11 @@ Plug 'ajmwagar/vim-deus'  " deus theme
 " #### File navigaton
 "Plug '/usr/bin/fzf'
 Plug 'junegunn/fzf.vim'
+Plug 'ptzz/lf.vim'
+Plug 'rbgrouleff/bclose.vim'
 "Plug 'kevinhwang91/rnvimr', {'do': 'make sync'}
 
-" #### Auto Complete 
+" #### Auto Complete
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 Plug 'ncm2/ncm2', {'for': 'python'}
@@ -549,3 +551,10 @@ let g:indentLine_setColors = 0
 " === startify
 " ===
 nnoremap st :Startify<CR>
+
+
+" ===
+" === lf
+" ===
+"let g:lf_map_keys = 0
+"map <leader>f :LF<CR>
