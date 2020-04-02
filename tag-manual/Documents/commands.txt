@@ -1,0 +1,15 @@
+fc-list
+fc-cache -vf
+
+sudo systemctl start xxxxx.service
+systemctl --type=service
+
+
+aplay -l
+alsamixer
+sudo vim /etc/asound.conf
+
+
+
+
+

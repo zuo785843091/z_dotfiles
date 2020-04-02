@@ -1,0 +1,92 @@
+How-to-use-v2ray-on-Arch-Linux
+
+目录
+1. 下载安装
+2. 配置
+3. 浏览器插件:Proxy-SwitchyOmega
+4. 运行
+4.1 手动运行
+4.2 作为服务在后台运行
+4.3 设置开机启动
+5. 更多相关信息
+1.下载安装
+https://github.com/v2ray/manual/blob/master/zh_cn/chapter_00/install.md
+这里有直接支持Arch的包: https://www.archlinux.org/packages/community/x86_64/v2ray/
+在 Arch Linux 上安装 v2ray:
+$ sudo pacman -S v2ray 
+
+2. 配置
+https://github.com/v2ray/manual/blob/master/zh_cn/chapter_00/start.md 
+参照修改v2ray配置文件: /etc/v2ray/config.json 
+参考文件：https://www.everythingido.club/config.json 
+
+$ sudo vim /etc/v2ray/config.json 
+
+
+    "inbound": {
+      "port": 1080, // 监听端口,SOCKS 代理端口，在浏览器中需配置代理并指向这个端口
+      "listen": "127.0.0.1", // == github.com 手册
+      "protocol": "socks", // 入口协议为 SOCKS 5
+      "settings": {
+        "auth": "noauth"  //socks的认证设置，noauth 代表不认证，由于 socks 通常在客户端使用，所以这里不认证
+        "udp": true   // == github.com 手册
+      }
+    },
+    "outbound": {
+      "protocol": "vmess", // 出口协议
+      "settings": {
+        "vnext": [
+          {
+            "address": "umakemewanna.club", // 服务器地址，请修改为你自己的服务器 ip 或域名
+            "port": 443,  // 服务器端口
+            "users": [
+              {
+                "id": "4dcd236d-b6de-4e4d-bff4-2088d7733c04",  // 用户 ID，必须与服务器端配置相同
+                "alterId": 171 ,// 此处的值也应当与服务器相同
+                "security": "aes-128-gcm"
+              }
+            ]
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "ws",
+        "security": "tls",
+        "tlsSettings": {
+            "serverName": "umakemewanna.club" //服务器地址
+        },
+        "wsSettings":{
+            "path":"/neuromancer"
+        }
+      }
+    }
+  }
+
+
+3. 运行
+3.1 手动运行:
+$ sudo v2ray -config /etc/v2ray/config.json 
+V2Ray 4.18.0 (Po) 20190228
+A unified platform for anti-censorship.
+2019/06/04 17:40:14 [Warning] v2ray.com/core: V2Ray 4.18.0 started
+
+3.2 作为服务在后台运行
+启动
+$ sudo systemctl start v2ray.service 
+关闭
+$ sudo systemctl stop v2ray.service 
+
+3.3 设置开机启动
+$ sudo systemctl enable v2ray.service 
+
+4. 浏览器插件: Proxy-SwitchyOmega
+https://www.everythingido.club/Proxy-SwitchyOmega-Chromium-2.5.15.crx
+google-chrome-stable --disk-cache-dir="/tmp/chrome/" --proxy-server="socks5://127.0.0.1:1080"
+
+
+5. 更多相关信息
+下载地址：https://github.com/v2ray/v2ray-core/releases
+中文手册：https://github.com/v2ray/manual/blob/master/zh_cn/SUMMARY.md
+其他站点
+下载地址：https://www.everythingido.club/
+使用教程：https://lookatthestars.club/

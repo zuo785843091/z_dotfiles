@@ -1,0 +1,10 @@
+mkrc [rcfiles]   # 建立rc链接
+mkrc -t [tagname] [rcfiles]
+
+rcdn [rcfiles]   # 删除链接
+rcdn -t [tagname] [rcfiles]
+
+rcup [rcfiles]   # 恢复链接
+rcup -t [tagname] [rcfiles]
+
+rcls

@@ -1,2 +1,2 @@
-TAGS="rcm bash zsh python nvim lf dwm xinit"
+TAGS="rcm bash zsh python nvim lf dwm xinit manual"
 EXCLUDES="readme.md"

@@ -1,0 +1,19 @@
+pacman -S                  # 安装软件
+pacman -Sy                 # 更新软件源
+pacman -Syy                # 强制更新软件源
+pacman -Syyu               # 更新软件源并更新软件和系统
+pacman -Ss "softname"      # 搜索软件
+pacman -Sc                 # 清理未安装的软件包
+pacman -Scc                # 清理所有缓存的软件包
+pacman -R                  # 删除软件
+pacman -Rs                 # 删除软件以及未被其它软件依赖的包
+pacman -Rns                # 删除软件以及未被其它软件依赖的包以及对应的全局配置文件
+pacman -Q                  # 查找本地安装的软件包
+pacman -Q | wc -l          # 查看安装了多少软件
+pacman -Qe                 # 查看自己安装的软件
+pacman -Qeq                # 不显示版本号
+pacman -Qs "softname"      # 查找本地安装的软件
+pacman -Qdtq               # 查找孤立的软件包
+pacman -R $(pacman -Qdtq)  # 删除孤立的软件
+
+
