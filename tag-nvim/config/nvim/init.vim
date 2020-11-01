@@ -246,6 +246,7 @@ Plug 'ajmwagar/vim-deus'  " deus theme
 
 " #### File navigaton
 "Plug '/usr/bin/fzf'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'ptzz/lf.vim'
 Plug 'rbgrouleff/bclose.vim'
