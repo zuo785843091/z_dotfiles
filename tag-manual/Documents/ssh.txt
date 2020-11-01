@@ -1,0 +1,8 @@
+#安装ssh
+sudo pacman -Syy openssh
+#启动服务
+systemctl start sshd
+#开机启动
+systemctl enable sshd.service
+#连接到服务器
+ssh -p port user@server-address

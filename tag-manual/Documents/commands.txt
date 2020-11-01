@@ -4,10 +4,13 @@ fc-cache -vf
 sudo systemctl start xxxxx.service
 systemctl --type=service
 
-
+sudo pacman -S alsa-utils
 aplay -l
 alsamixer
 sudo vim /etc/asound.conf
+defaults.pcm.card 1
+defaults.pcm.device 0
+defaults.ctl.card 1
 
 
 
