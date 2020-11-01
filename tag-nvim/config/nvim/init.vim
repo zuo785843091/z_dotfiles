@@ -8,16 +8,6 @@
 				"\ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 	"autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 "endif
-"
-"" ===
-"" === Create a _machine_specific.vim file to adjust machine specific stuff, like python interpreter location
-"" ===
-"let has_machine_specific_file = 1
-"if empty(glob('~/.config/nvim/_machine_specific.vim'))
-	"let has_machine_specific_file = 0
-	"silent! exec "!cp ~/.config/nvim/default_configs/_machine_specific_default.vim ~/.config/nvim/_machine_specific.vim"
-"endif
-"source ~/.config/nvim/_machine_specific.vim
 
 let g:python_host_skip_check=1
 "let g:python_host_prog = '/usr/bin/python'
@@ -46,7 +36,8 @@ set shiftwidth=4
 set softtabstop=4
 set textwidth=79
 set fileformat=unix
-"set wrap                                    " 设置文本达到textwidth宽度时自动换行，但实际文件还是一行
+set wrap                                    " 设置文本达到textwidth宽度时自动换行，但实际文件还是一行
+"set nowrap                                    " 设置文本达到textwidth宽度时自动换行，但实际文件还是一行
 set autoindent                              " 插入模式下输入<cr>或使用"o"或"O"命令开新行，从当前行复制缩进距离
 set list
 set listchars=tab:\|\ ,trail:▫              " Tab 和 空格显示符
@@ -86,39 +77,40 @@ if has('persistent_undo')
 endif
 
 set colorcolumn=80 " 设置竖线
-set updatetime=1000
+set updatetime=300
 set virtualedit=block  " ctrl+v 模式下选中方块
 
 "au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
-let g:terminal_color_0 = '#4e4e4e'
-let g:terminal_color_1 = '#d68787'
-let g:terminal_color_2 = '#5f865f'
-let g:terminal_color_3 = '#d8af5f'
-let g:terminal_color_4 = '#85add4'
-let g:terminal_color_5 = '#d7afaf'
-let g:terminal_color_6 = '#87afaf'
-let g:terminal_color_7 = '#d0d0d0'
-let g:terminal_color_8 = '#626262'
-let g:terminal_color_9 = '#d75f87'
-let g:terminal_color_10 = '#87af87'
-let g:terminal_color_11 = '#ffd787'
-let g:terminal_color_12 = '#add4fb'
-let g:terminal_color_13 = '#ffafaf'
-let g:terminal_color_14 = '#87d7d7'
-let g:terminal_color_15 = '#e4e4e4'
+"let g:terminal_color_0 = '#4e4e4e'
+"let g:terminal_color_1 = '#d68787'
+"let g:terminal_color_2 = '#5f865f'
+"let g:terminal_color_3 = '#d8af5f'
+"let g:terminal_color_4 = '#85add4'
+"let g:terminal_color_5 = '#d7afaf'
+"let g:terminal_color_6 = '#87afaf'
+"let g:terminal_color_7 = '#d0d0d0'
+"let g:terminal_color_8 = '#626262'
+"let g:terminal_color_9 = '#d75f87'
+"let g:terminal_color_10 = '#87af87'
+"let g:terminal_color_11 = '#ffd787'
+"let g:terminal_color_12 = '#add4fb'
+"let g:terminal_color_13 = '#ffafaf'
+"let g:terminal_color_14 = '#87d7d7'
+"let g:terminal_color_15 = '#e4e4e4'
 
-set fillchars=vert:\|,fold:-
+"set fillchars=vert:\|,fold:-
 autocmd BufReadPost *
   \ if line("'\"") >= 1 && line("'\"") <= line("$") |
   \   exe "normal! g`\"" |
   \ endif
+
 " ===
 " === Basic Mappings
 " ===
 " Set <LEADER> as <SPACE>, ; as :
 let mapleader=" "
-"noremap ; :
+noremap ; :
 
 " Save & quit
 noremap Q :q<CR>
@@ -160,6 +152,14 @@ noremap <LEADER>k <C-w>k
 noremap <LEADER>j <C-w>j
 noremap <LEADER>h <C-w>h
 noremap <LEADER>l <C-w>l
+
+noremap <A-k> <C-w>+
+noremap <A-j> <C-w>-
+noremap <A-h> <C-w><
+noremap <A-l> <C-w>>
+noremap fj <C-w>_
+noremap fl <C-w>|
+noremap f= <C-w>=
 
 " 缩进健
 nnoremap < <<
@@ -246,6 +246,7 @@ Plug 'ajmwagar/vim-deus'  " deus theme
 
 " #### File navigaton
 "Plug '/usr/bin/fzf'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'ptzz/lf.vim'
 Plug 'rbgrouleff/bclose.vim'
@@ -254,32 +255,14 @@ Plug 'rbgrouleff/bclose.vim'
 " #### Auto Complete
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-Plug 'ncm2/ncm2', {'for': 'python'}
-Plug 'roxma/nvim-yarp', {'for': 'python'}
-Plug 'ncm2/ncm2-jedi', {'for': 'python'}
-"Plug 'ncm2/ncm2-github'
-"Plug 'ncm2/ncm2-bufword'
-"Plug 'ncm2/ncm2-path'
-"Plug 'ncm2/ncm2-match-highlight'
-"Plug 'ncm2/ncm2-markdown-subscope'
-Plug 'ncm2/float-preview.nvim', {'for': 'python'}
-Plug 'ncm2/ncm2-ultisnips', {'for': 'python'}
-
-"" #### Error checking
-Plug 'dense-analysis/ale', {'for': 'python'}
-
-" #### Snippets
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
-
 " #### Formatter
 Plug 'Chiel92/vim-autoformat'
 
-" #### Python
-Plug 'tmhedberg/SimpylFold', { 'for' :['python', 'vim-plug'] }
-Plug 'Vimjas/vim-python-pep8-indent', { 'for' :['python', 'vim-plug'] }
-Plug 'numirias/semshi', { 'do': ':UpdateRemotePlugins', 'for' :['python', 'vim-plug'] }
-Plug 'tweekmonster/braceless.vim'
+"" #### Python
+""Plug 'tmhedberg/SimpylFold', { 'for' :['python', 'vim-plug'] }
+"Plug 'Vimjas/vim-python-pep8-indent', { 'for' :['python', 'vim-plug'] }
+"Plug 'numirias/semshi', { 'do': ':UpdateRemotePlugins', 'for' :['python', 'vim-plug'] }
+"Plug 'tweekmonster/braceless.vim'
 
 " #### Tex
 "Plug 'lervag/vimtex'
@@ -299,7 +282,7 @@ Plug 'mhinz/vim-startify'  " 打开vim时显示打开选项
 
 " #### Other visual enhancement
 " Plug 'ryanoasis/vim-devicons'
-
+Plug 'mg979/vim-xtabline'
 
 " #### indentline
 Plug 'Yggdroot/indentLine'
@@ -342,39 +325,15 @@ nmap ga <Plug>(EasyAlign)
 "let g:rnvimr_presets = [{'width': 1.0, 'height': 1.0}]
 
 
-" ===
-" === NCM2
-" ===
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-""inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>": "\<CR>")
-autocmd BufEnter * call ncm2#enable_for_buffer() "缓存
-set completeopt=noinsert,menuone,noselect "补全模式设置 noselect:不自动选择第一行
-"set completeopt=longest,noinsert,menuone,noselect,preview " 补全模式设置
-set	shortmess+=c
-let ncm2#popup_delay = 5    " 延迟弹窗，这样提示更加流畅
-let g:ncm2#matcher = "substrfuzzy"   "模糊匹配模式
-let g:ncm2_jedi#python_version = 3
-let g:ncm2#match_highlight = 'bold'
-let g:jedi#auto_initialization = 1
-""let g:jedi#completion_enabled = 0
-""let g:jedi#auto_vim_configuration = 0
-""let g:jedi#smart_auto_mapping = 0
-"let g:jedi#popup_on_dot = 1
-"let g:jedi#completion_command = ""
-"let g:jedi#show_call_signatures = "1"
-" 悬浮窗设置
-let g:float_preview#docked = 0
-
 " ======== ncm2_ultisnips ================================
 " Press enter key to trigger snippet expansion
 " The parameters are the same as `:help feedkeys()`
-inoremap <silent> <expr> <CR> ncm2_ultisnips#expand_or("\<CR>", 'n')
-" c-j c-k for moving in snippet
-"let g:UltiSnipsExpandTrigger		= "<Plug>(ultisnips_expand)"
-"let g:UltiSnipsJumpForwardTrigger	= "<c-j>"
-"let g:UltiSnipsJumpBackwardTrigger	= "<c-k>"
-let g:UltiSnipsRemoveSelectModeMappings = 0
+"inoremap <silent> <expr> <CR> ncm2_ultisnips#expand_or("\<CR>", 'n')
+"" c-j c-k for moving in snippet
+""let g:UltiSnipsExpandTrigger		= "<Plug>(ultisnips_expand)"
+""let g:UltiSnipsJumpForwardTrigger	= "<c-j>"
+""let g:UltiSnipsJumpBackwardTrigger	= "<c-k>"
+"let g:UltiSnipsRemoveSelectModeMappings = 0
  
 
 " ===
@@ -384,28 +343,71 @@ let g:UltiSnipsRemoveSelectModeMappings = 0
 " "silent! au BufEnter,BufRead,BufNewFile * silent! unmap if
 " 
 "let g:coc_global_extensions = ['coc-python', 'coc-vimlsp', 'coc-html', 'coc-json', 'coc-css', 'coc-tsserver', 'coc-yank', 'coc-gitignore', 'coc-vimlsp', 'coc-tailwindcss', 'coc-stylelint', 'coc-tslint', 'coc-lists', 'coc-git', 'coc-explorer', 'coc-pyright', 'coc-sourcekit', 'coc-translator', 'coc-flutter']
-let g:coc_global_extensions = ['coc-json', 'coc-yank', 'coc-translator']
-"set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
-"nmap <silent> <TAB> <Plug>(coc-range-select)
-"xmap <silent> <TAB> <Plug>(coc-range-select)
+let g:coc_global_extensions = [
+    \ 'coc-actions', 
+    \ 'coc-explorer', 
+    \ 'coc-json', 
+    \ 'coc-yank',
+    \ 'coc-translator',
+    \ 'coc-vimlsp',
+    \ 'coc-python']
+" Don't pass messages to |ins-completion-menu|.
+set shortmess+=c
+
+" Always show the signcolumn, otherwise it would shift the text each time
+" diagnostics appear/become resolved.
+if has("patch-8.1.1564")
+  " Recently vim can merge signcolumn and number column into one
+  set signcolumn=number
+else
+  set signcolumn=yes
+endif
+
+" Use tab for trigger completion with characters ahead and navigate.
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
 function! s:check_back_space() abort
-	let col = col('.') - 1
-	return !col || getline('.')[col - 1]	=~ '\s'
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
-inoremap <silent><expr> <Tab>
-	\ pumvisible() ? "\<C-n>" :
-	\ <SID>check_back_space() ? "\<Tab>" :
-	\ coc#refresh()
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-function! s:check_back_space() abort
-	let col = col('.') - 1
-	return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
+
+" Use <c-space> to trigger completion.
 inoremap <silent><expr> <c-space> coc#refresh()
 
+" Make <CR> auto-select the first completion item and notify coc.nvim to
+" format on enter, <cr> could be remapped by other vim plugin
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+" Use `[g` and `]g` to navigate diagnostics
+" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
+nmap <silent> <leader>- <Plug>(coc-diagnostic-prev)
+nmap <silent> <leader>= <Plug>(coc-diagnostic-next)
+
+" Use K to show documentation in preview window.
+nnoremap <silent> <C-h> :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  elseif (coc#rpc#ready())
+    call CocActionAsync('doHover')
+  else
+    execute '!' . &keywordprg . " " . expand('<cword>')
+  endif
+endfunction
+
+" Highlight the symbol and its references when holding the cursor.
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
 " Open up coc-commands
-"nnoremap <c-c> :CocCommand<CR>
-" Text Objects
+nnoremap <c-c> :CocCommand<CR>
+ "Text Objects
 "xmap kf <Plug>(coc-funcobj-i)
 "xmap af <Plug>(coc-funcobj-a)
 "omap kf <Plug>(coc-funcobj-i)
@@ -413,53 +415,35 @@ inoremap <silent><expr> <c-space> coc#refresh()
 " Useful commands
 nnoremap <silent> <space>y :<C-u>CocList -A --normal yank<cr>
 nmap <silent> gd <Plug>(coc-definition)
-"nmap <silent> gy <Plug>(coc-type-definition)
-"nmap <silent> gi <Plug>(coc-implementation)
-"nmap <silent> gr <Plug>(coc-references)
-"nmap <leader>rn <Plug>(coc-rename)
-"nmap tt :CocCommand explorer<CR>
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+nmap <leader> rn <Plug>(coc-rename)
+
+nmap tt :CocCommand explorer<CR>
 " coc-translator
 nmap ts <Plug>(coc-translator-p)
 vmap ts <Plug>(coc-translator-pv)
-" Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
-"xmap <leader>a  <Plug>(coc-codeaction-selected)
-"nmap <leader>a  <Plug>(coc-codeaction-selected)
+" Remap for do codeAction of selected region
+function! s:cocActionsOpenFromSelected(type) abort
+  execute 'CocCommand actions.open ' . a:type
+endfunction
+xmap <silent> <leader>a :<C-u>execute 'CocCommand actions.open ' . visualmode()<CR>
+nmap <silent> <leader>a :<C-u>set operatorfunc=<SID>cocActionsOpenFromSelected<CR>g@
 
 
-" ===
-" === ale
-" ===
-"let g:ale_linters={'python': ['pylint']}
-"let g:ale_fixers={'python': ['yapf', 'autopep8']}
-"let g:ale_fix_on_save=1
-"let g:ale_set_balloons=1
-"let g:ale_hover_to_preview=1
-"let g:ale_sign_error = '>>'
-"let g:ale_sign_warning = '--'
-"let g:airline#extensions#ale#enabled = 1
-"let g:ale_echo_msg_error_str = 'E'
-"let g:ale_echo_msg_warning_str = 'W'
-"let g:ale_echo_msg_format = '[%linter%] %code%: %s [%severity%]'
-"let g:ale_set_loclist = 0
-"let g:ale_set_quickfix = 1
-"let g:ale_open_list = 1
-" Set this if you want to.
-" This can be useful if you are combining ALE with
-" some other plugin which sets quickfix errors, etc.
-"let g:ale_keep_list_window_open = 1
-"noremap gd :ALEGoToDefinition<CR>
 
-
-" ===
-" === Ultisnips
-" ===
-let g:tex_flavor = "latex"
-inoremap <c-n> <nop>
-let g:UltiSnipsExpandTrigger="<c-e>"
-let g:UltiSnipsJumpForwardTrigger="<c-n>"
-let g:UltiSnipsJumpBackwardTrigger="<c-p>"
-let g:UltiSnipsSnippetDirectories = [$HOME.'/.config/nvim/UltiSnips/']
-silent! au BufEnter,BufRead,BufNewFile * silent! unmap <c-r>
+"" ===
+"" === Ultisnips
+"" ===
+"let g:tex_flavor = "latex"
+"inoremap <c-n> <nop>
+"let g:UltiSnipsExpandTrigger="<c-e>"
+"let g:UltiSnipsJumpForwardTrigger="<c-n>"
+"let g:UltiSnipsJumpBackwardTrigger="<c-p>"
+"let g:UltiSnipsSnippetDirectories = [$HOME.'/.config/nvim/UltiSnips/']
+"silent! au BufEnter,BufRead,BufNewFile * silent! unmap <c-r>
 
 
 
@@ -477,47 +461,47 @@ noremap <C-p> :FZF<CR>
 
 autocmd! FileType fzf
 autocmd  FileType fzf set laststatus=0 noruler
-	\| autocmd BufLeave <buffer> set laststatus=2 ruler
+    \| autocmd BufLeave <buffer> set laststatus=2 ruler
 
 command! -bang -nargs=* Buffers
-	\ call fzf#vim#buffers(
-	\   '',
-	\   <bang>0 ? fzf#vim#with_preview('up:60%')
-	\           : fzf#vim#with_preview('right:0%', '?'),
-	\   <bang>0)
+    \ call fzf#vim#buffers(
+    \   '',
+    \   <bang>0 ? fzf#vim#with_preview('up:60%')
+    \           : fzf#vim#with_preview('right:0%', '?'),
+    \   <bang>0)
 
 command! -bang -nargs=* LinesWithPreview
-	\ call fzf#vim#grep(
-	\   'rg --with-filename --column --line-number --no-heading --color=always --smart-case . '.fnameescape(expand('%')), 1,
-	\   fzf#vim#with_preview({}, 'up:50%', '?'),
-	\   1)
+    \ call fzf#vim#grep(
+    \   'rg --with-filename --column --line-number --no-heading --color=always --smart-case . '.fnameescape(expand('%')), 1,
+    \   fzf#vim#with_preview({}, 'up:50%', '?'),
+    \   1)
 
 command! -bang -nargs=* Ag
-	\ call fzf#vim#ag(
-	\   '',
-	\   <bang>0 ? fzf#vim#with_preview('up:60%')
-	\           : fzf#vim#with_preview('right:50%', '?'),
-	\   <bang>0)
+    \ call fzf#vim#ag(
+    \   '',
+    \   <bang>0 ? fzf#vim#with_preview('up:60%')
+    \           : fzf#vim#with_preview('right:50%', '?'),
+    \   <bang>0)
 
 command! -bang -nargs=* MRU call fzf#vim#history(fzf#vim#with_preview())
 
 command! -bang BTags
-	\ call fzf#vim#buffer_tags('', {
-	\     'down': '40%',
-	\     'options': '--with-nth 1
-	\                 --reverse
-	\                 --prompt "> "
-	\                 --preview-window="70%"
-	\                 --preview "
-	\                     tail -n +\$(echo {3} | tr -d \";\\\"\") {2} |
-	\                     head -n 16"'
-	\ })
+    \ call fzf#vim#buffer_tags('', {
+    \     'down': '40%',
+    \     'options': '--with-nth 1
+    \                 --reverse
+    \                 --prompt "> "
+    \                 --preview-window="70%"
+    \                 --preview "
+    \                     tail -n +\$(echo {3} | tr -d \";\\\"\") {2} |
+    \                     head -n 16"'
+    \ })
 
 
-" ===
-" === :Autoformat
-" ===
-nnoremap \f :Autoformat<CR>
+"" ===
+"" === :Autoformat
+"" ===
+"nnoremap \f :Autoformat<CR>
 
 
 " ===
@@ -525,14 +509,16 @@ nnoremap \f :Autoformat<CR>
 " ===
 let g:vimspector_enable_mappings = 'HUMAN'
 function! s:read_template_into_buffer(template)	
-	" has to be a function to avoid the extra space fzf#run insers otherwise	
-	execute '0r ~/.config/nvim/sample_vimspector_json/'.a:template
+    " has to be a function to avoid the extra space fzf#run insers otherwise	
+    execute '0r ~/.config/nvim/sample_vimspector_json/'.a:template
 endfunction
-command! -bang -nargs=* LoadVimSpectorJsonTemplate call fzf#run({
-			\   'source': 'ls -1 ~/.config/nvim/sample_vimspector_json',
-			\   'down': 20,
-			\   'sink': function('<sid>read_template_into_buffer')
-			\ })
+command! -bang -nargs=* LoadVimSpectorJsonTemplate
+    \ call fzf#run({
+    \   'source': 'ls -1 ~/.config/nvim/sample_vimspector_json',
+    \   'down': 20,
+    \   'sink': function('<sid>read_template_into_buffer')
+    \ })
+
 noremap <leader>vs :tabe .vimspector.json<CR>:LoadVimSpectorJsonTemplate<CR>
 noremap <F7> :VimspectorReset<CR>
 sign define vimspectorBP text=☛ texthl=Normal
@@ -543,7 +529,7 @@ sign define vimspectorPC text=> texthl=SpellBad
 " === indentline
 " ===
 let g:indentLine_setColors = 0
-"let g:indentLine_color_term = 202
+"let gindentLine_color_term = 202
 "let g:indentLine_bgcolor_term = 2
 
 
@@ -556,5 +542,16 @@ nnoremap st :Startify<CR>
 " ===
 " === lf
 " ===
-"let g:lf_map_keys = 0
+"let g:lf_mapkeys = 0
 "map <leader>f :LF<CR>
+
+" ===
+" === xtabline
+" ===
+let g:xtabline_settings = {}
+let g:xtabline_settings.enable_mappings = 0
+let g:xtabline_settings.tabline_modes = ['tabs', 'buffers']
+let g:xtabline_settings.enable_persistance = 0
+let g:xtabline_settings.last_open_first = 1
+noremap to :XTabCycleMode<CR>
+noremap \p :echo expand('%:p')<CR>
