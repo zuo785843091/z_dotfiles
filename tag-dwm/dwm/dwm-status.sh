@@ -10,10 +10,6 @@ function get_bytes {
 	line=$(grep $interface /proc/net/dev | cut -d ':' -f 2 | awk '{print "received_bytes="$1, "transmitted_bytes="$9}')
 	eval $line
 	now=$(date +%s%N)
-
-    pre_cup_info=$(cat /proc/stat | grep -w cpu | awk '{print $2,$3,$4,$5,$6,$7,$8}')
-    idle=$(echo $pre_cup_info | awk '{print $4}')
-    cup_time=$(echo $pre_cup_info | awk '{print $1+$2+$3+$4+$5+$6+$7}')
 }
 
 # Function which calculates the speed using actual and old byte number.
@@ -35,6 +31,12 @@ function get_velocity {
 	fi
 }
 
+function get_cpu_info {
+    pre_cup_info=$(cat /proc/stat | grep -w cpu | awk '{print $2,$3,$4,$5,$6,$7,$8}')
+    idle=$(echo $pre_cup_info | awk '{print $4}')
+    cup_time=$(echo $pre_cup_info | awk '{print $1+$2+$3+$4+$5+$6+$7}')
+}
+
 function get_cup_usage {
     idle=$1
     cup_time=$2
@@ -47,12 +49,14 @@ function get_cup_usage {
     #timediff=$(($now - $old_time))
 }
 
-# Get initial values
-get_bytes
+##Get initial values
+#get_bytes
 
-old_transmitted_bytes=$transmitted_bytes
-old_time=$now
+old_transmitted_bytes=1
+old_received_bytes=1
+old_time=$(date +%s%N)
 
+get_cpu_info
 old_idle=$idle
 old_cup_time=$cup_time
 
@@ -78,7 +82,6 @@ print_temp(){
 	echo $(head -c 2 /sys/class/thermal/thermal_zone0/temp)C
 }
 
-#!/bin/bash
 
 get_time_until_charged() {
 
@@ -120,8 +123,6 @@ get_battery_charging_status() {
 	fi
 }
 
-
-
 print_bat(){
 	#hash acpi || return 0
 	#onl="$(grep "on-line" <(acpi -V))"
@@ -137,7 +138,7 @@ print_bat(){
 		#echo -e "${charge}"
 	#fi
 	#echo "$(get_battery_charging_status) $(get_battery_combined_percent)%, $(get_time_until_charged )";
-	echo "$(get_battery_charging_status) $(get_battery_combined_percent)%, $(get_time_until_charged )";
+	echo "$(get_battery_charging_status) $(get_battery_combined_percent)%";
 }
 
 #print_date(){
@@ -175,7 +176,7 @@ export IDENTIFIER="unicode"
 #. "$DIR/dwmbar-functions/dwm_ccurse.sh"
 #. "$DIR/dwmbar-functions/dwm_date.sh"
 
-#get_bytes
+loop_count=0
 
 while true
 do
@@ -184,19 +185,31 @@ do
     vel_recv=$(get_velocity $received_bytes $old_received_bytes $now)
     vel_trans=$(get_velocity $transmitted_bytes $old_transmitted_bytes $now)
 
-    # Calculates cup usage
-    cup_usage=$(get_cup_usage $idle $cup_time)
-
     old_received_bytes=$received_bytes
     old_transmitted_bytes=$transmitted_bytes
     old_time=$now
 
+    # Calculates cup usage
+    get_cpu_info
+    cup_usage=$(get_cup_usage $idle $cup_time)
+
     old_idle=$idle
     old_cup_time=$cup_time
 
-    xsetroot -name "CPU $cup_usage  💿 $(print_mem)M ⬇ $vel_recv ⬆ $vel_trans $(dwm_alsa) $(print_date)"
 
+    #xsetroot -name "CPU $cup_usage 💿 $(print_mem)M $(dwm_alsa) $(print_bat) $(print_date)"
+    #xsetroot -name "CPU $cup_usage  💿 $(print_mem)M ⬇ $vel_recv ⬆ $vel_trans $(dwm_alsa) $(dwm_battery) $(print_date)"
+    if [ $loop_count == 2 ]
+    then
+        xsetroot -name "CPU $cup_usage  💿 $(print_mem)M ⬇ $vel_recv ⬆ $vel_trans $(dwm_alsa) $(print_bat) $(print_date)"
+        #xsetroot -name "CPU $cup_usage 💿 $(print_mem)M $(dwm_alsa) $(print_bat) $(print_date)"
+        loop_count=0
+    else
+        xsetroot -name "CPU $cup_usage  💿 $(print_mem)M ⬇ $vel_recv ⬆ $vel_trans $(dwm_alsa) $(print_bat) $(print_date)"
+        #xsetroot -name "CPU $cup_usage 💿 $(print_mem)M $(dwm_alsa) $(print_date)"
+    fi
     sleep 1
+    loop_count=`expr $loop_count + 1`
 done
 
 exit 0

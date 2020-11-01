@@ -1,11 +1,9 @@
-/bin/bash ~/.dwm/dwm-status.sh &
 export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
-export XMODIFIERS=@im=fcitx
+export XMODIFIERS="@im=fcitx"
+
 fcitx &
 
-if [ -f $HOME/.Xmodmap ]; then
-    /usr/bin/xmodmap $HOME/.Xmodmap
-fi
+syndaemon -i 1 -t -K -d
 
-exec startdwm
+exec dwm
