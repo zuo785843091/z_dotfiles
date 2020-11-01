@@ -82,7 +82,7 @@ $ sudo systemctl enable v2ray.service
 4. 浏览器插件: Proxy-SwitchyOmega
 https://www.everythingido.club/Proxy-SwitchyOmega-Chromium-2.5.15.crx
 google-chrome-stable --disk-cache-dir="/tmp/chrome/" --proxy-server="socks5://127.0.0.1:1080"
-
+https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt
 
 5. 更多相关信息
 下载地址：https://github.com/v2ray/v2ray-core/releases

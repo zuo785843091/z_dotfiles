@@ -1,7 +1,10 @@
 export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
 export XMODIFIERS="@im=fcitx"
+<<<<<<< HEAD
 
+=======
+>>>>>>> 369cd3d450f198ae953772e3f42b6eb731ba9acf
 fcitx &
 
 syndaemon -i 1 -t -K -d
