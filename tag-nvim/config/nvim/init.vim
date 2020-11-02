@@ -153,13 +153,13 @@ noremap <LEADER>j <C-w>j
 noremap <LEADER>h <C-w>h
 noremap <LEADER>l <C-w>l
 
-noremap <A-k> <C-w>+
-noremap <A-j> <C-w>-
-noremap <A-h> <C-w><
-noremap <A-l> <C-w>>
-noremap fj <C-w>_
-noremap fl <C-w>|
-noremap f= <C-w>=
+nnoremap <A-k> <C-w>+
+nnoremap <A-j> <C-w>-
+nnoremap <A-h> <C-w><
+nnoremap <A-l> <C-w>>
+nnoremap fj <C-w>_
+nnoremap fl <C-w>|
+nnoremap f= <C-w>=
 
 " 缩进健
 nnoremap < <<
@@ -251,6 +251,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'ptzz/lf.vim'
 Plug 'rbgrouleff/bclose.vim'
 "Plug 'kevinhwang91/rnvimr', {'do': 'make sync'}
+Plug 'voldikss/vim-floaterm'
 
 " #### Auto Complete
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -543,7 +544,7 @@ nnoremap st :Startify<CR>
 " === lf
 " ===
 "let g:lf_mapkeys = 0
-"map <leader>f :LF<CR>
+map <leader>f :FloatermNew lf<CR>
 
 " ===
 " === xtabline
@@ -555,3 +556,19 @@ let g:xtabline_settings.enable_persistance = 0
 let g:xtabline_settings.last_open_first = 1
 noremap to :XTabCycleMode<CR>
 noremap \p :echo expand('%:p')<CR>
+
+
+" ===
+" === vim-floaterm
+" ===
+"let g:floaterm_keymap_new = 'fn'
+"let g:floaterm_keymap_kill = '<C-k>'
+"let g:floaterm_keymap_prev
+"let g:floaterm_keymap_next
+"let g:floaterm_keymap_first
+"let g:floaterm_keymap_last
+"let g:floaterm_keymap_hide
+"let g:floaterm_keymap_show
+let g:floaterm_keymap_toggle = '<A-t>'
+nnoremap   <silent>   fnp    :FloatermNew --width=0.5 --wintype=normal --position=right python<CR>
+nnoremap   <silent>   fns    :FloatermNew<CR>
